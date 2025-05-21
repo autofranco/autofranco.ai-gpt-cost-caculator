@@ -81,7 +81,7 @@ with st.container(border = True):
                    f"= `{round(total_cost_per_day * 30, 5)}`USD = `{round(total_cost_per_day * 30 * get_usd_to_ntd(), 5)}`NTD"] #12
         }
     )
-    st.metric(label="💵 預估成本", value=f"{round(total_cost_per_day * 30 * get_usd_to_ntd(), 5)}NTD")
+    st.metric(label="💵 每月預估成本", value=f"{round(total_cost_per_day * 30 * get_usd_to_ntd(), 5)}NTD")
     st.table(df)
     
 with st.container(border = True):
