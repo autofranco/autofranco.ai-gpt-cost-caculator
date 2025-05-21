@@ -25,7 +25,7 @@ with st.sidebar:
         st.number_input("每則用戶訊息使用多少 input token", step=1, key="input_tokens")
         st.number_input("每則 AI 回覆使用多少 output token", step=1, key="output_tokens")
         st.number_input("每則 AI 回覆使用多少 cached token", step=1, key="cached_tokens")
-        st.slider("知識庫大小 (GB)", 0, 100, 0, key="file_search_storage")
+        st.slider("知識庫大小 (GB)", min_value=0, max_value=100, key="file_search_storage")
         st.select_slider("網路搜索內容規模", options=["none", "low", "medium", "high"], key="web_search_content_size")
         st.toggle("是否會用到執行程式碼", key="code_interpreter_used")
 
