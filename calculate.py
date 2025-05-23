@@ -68,11 +68,11 @@ def get_cached_price_per_M(model_name):
 def get_web_search_price_per_K(model_name, search_size):
     if search_size == "none":
         return 0
-    elif large_model_web_search_pricing["model"].get(model_name):
+    elif model_name in large_model_web_search_pricing["model"]:
         print("search size = ", search_size)
         print("large_model_web_search_pricing[search_size] = ", large_model_web_search_pricing[search_size])
         return large_model_web_search_pricing[search_size]
-    elif small_model_web_search_pricing["model"].get(model_name):
+    elif model_name in small_model_web_search_pricing["model"]:
         print("search size = ", search_size)
         print("small_model_web_search_pricing[search_size] = ", small_model_web_search_pricing[search_size])
         return small_model_web_search_pricing[search_size]

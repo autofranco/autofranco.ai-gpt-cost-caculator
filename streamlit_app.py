@@ -113,7 +113,7 @@ with st.container(border = True):
             "算式": [f"`{input_tokens}` 個input token * `{get_input_price_per_M(model_name)}/1M` ({model_name}定價) = 每次 `${input_cost_per_call}`", #1
                    f"`{output_tokens}` 個output token * `{get_output_price_per_M(model_name)}/1M` ({model_name}定價) = 每次 `${output_cost_per_call}`", #2 
                    f"`{cached_tokens}` 個cache token * `{get_cached_price_per_M(model_name)}/1M` ({model_name}定價) = 每次 `${cached_cost_per_call}`", #3 
-                   f"每次 `${web_search_cost_per_call}`", #4
+                   f"每次 `${web_search_cost_per_call}` (only for: gpt-4.1, 4o, 4.1-mini, 4o-mini)", #4
                    f"每次 `${code_run_cost_per_call}`", #5
                    f"每次 `${file_search_cost_per_call}`", #6 
                    f"`${call_cost_per_call}`", #7 
