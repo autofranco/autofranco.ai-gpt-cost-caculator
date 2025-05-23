@@ -23,6 +23,7 @@ counter_html = """
     display: flex; /* 使用 Flexbox 讓內容在同一行 */
     align-items: center; /* 垂直居中對齊 */
     height: 24px; /* 設定整個容器的高度 */
+    background-color: #101216;
 ">
     <span style="
         color: white; /* 文字顏色設為白色 */
@@ -32,7 +33,7 @@ counter_html = """
     ">by <a href="https://www.youtube.com/@autofranco" target="_blank"
     style="
     margin-right: 30px;
-    color: #93ff00;
+    color: #0AFF2C;
     font-weight: bold;">Frankie全自動</a>造訪人次：</span>
 
     <div id="sfcn8y7ze3nr5bkt99dg8xd2j14k8t5u2es"></div>
@@ -44,7 +45,7 @@ counter_html = """
 # 使用 components.html 嵌入這段 HTML
 # height 和 scrolling 可以根據你的需求調整
 components.html(counter_html, height=25, scrolling=False)
-st.title('ChatGPT 收費計算機')
+st.title('GPT收費試算')
 
 # 初始化 session_state（只會執行一次）
 st.session_state.setdefault("daily_interactions", 100)
