@@ -1,7 +1,49 @@
 import streamlit as st
 from calculate import model_list, get_input_price_per_M, get_output_price_per_M, get_cached_price_per_M, get_web_search_price_per_K, get_code_run_price_per_session, get_file_search_price_per_K, get_file_search_storage_GB_per_day, get_usd_to_ntd
 import pandas as pd
+import streamlit.components.v1 as components # 導入 components 模組
 
+st.set_page_config(page_title="ChatGPT 收費計算機", layout="wide")
+# Reducing whitespace on the top of the page
+st.markdown("""
+<style>
+.block-container
+{
+    padding-top: 1rem;
+    padding-bottom: 0rem;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# 定義你從網站獲取的完整的 HTML 片段
+counter_html = """
+<div style="
+    display: flex; /* 使用 Flexbox 讓內容在同一行 */
+    align-items: center; /* 垂直居中對齊 */
+    height: 24px; /* 設定整個容器的高度 */
+">
+    <span style="
+        color: white; /* 文字顏色設為白色 */
+        font-size: 12px; /* 調整字體大小，可以根據圖片大小微調 */
+        line-height: 24px; /* 行高與容器高度一致，幫助垂直對齊 */
+        white-space: nowrap; /* 防止文字換行 */
+    ">by <a href="https://www.youtube.com/@autofranco" target="_blank"
+    style="
+    margin-right: 30px;
+    color: #93ff00;
+    font-weight: bold;">Frankie全自動</a>造訪人次：</span>
+
+    <div id="sfcn8y7ze3nr5bkt99dg8xd2j14k8t5u2es"></div>
+    <script type="text/javascript" src="https://counter4.optistats.ovh/private/counter.js?c=n8y7ze3nr5bkt99dg8xd2j14k8t5u2es&down=async" async></script>
+    <noscript><a href="https://www.freecounterstat.com" title="free counters for websites"><img src="https://counter4.optistats.ovh/private/freecounterstat.php?c=n8y7ze3nr5bkt99dg8xd2j14k8t5u2es" border="0" title="free counters for websites" alt="free counters for websites"></a></noscript>
+</div>
+"""
+
+# 使用 components.html 嵌入這段 HTML
+# height 和 scrolling 可以根據你的需求調整
+components.html(counter_html, height=25, scrolling=False)
 st.title('ChatGPT 收費計算機')
 
 # 初始化 session_state（只會執行一次）
@@ -80,51 +122,52 @@ with st.container(border = True):
                    f"= `${round(total_cost_per_day,5)}`", #10 
                    f"= `{round(total_cost_per_day * 30, 5)}`USD = `{round(total_cost_per_day * 30 * get_usd_to_ntd(), 5)}`NTD"] #12
         }
-    )
+    ).set_index('動作')
     st.metric(label="💵 每月預估成本", value=f"{round(total_cost_per_day * 30 * get_usd_to_ntd(), 5)}NTD")
     st.table(df)
     
-with st.container(border = True):
-    pricing = pd.DataFrame(
-        {
-            "model_name": ["gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4o", "gpt-4o-audio-preview", "gpt-4o-realtime-preview", "gpt-4o-mini", "gpt-4o-mini-audio-preview", "gpt-4o-mini-realtime-preview", "o1", "o1-pro", "o3", "o4-mini", "o3-mini", "o1-mini", "codex-mini-latest", "gpt-4o-mini-search-preview", "gpt-4o-search-preview", "computer-use-preview", "gpt-image-1-text", "gpt-image-1-image", "chatgpt-4o-latest", "gpt-4-turbo", "gpt-4", "gpt-4-32k", "gpt-3.5-turbo", "gpt-3.5-turbo-instruct", "gpt-3.5-turbo-16k-0613", "davinci-002", "babbage-002"],
-            "input": [2.0, 0.4, 0.1, 75.0, 2.5, 2.5, 5.0, 0.15, 0.15, 0.6, 15.0, 150.0, 10.0, 1.1, 1.1, 1.1, 1.5, 0.15, 2.5, 3.0, 5.0, 10.0, 5.0, 10.0, 30.0, 60.0, 0.5, 1.5, 3.0, 2.0, 0.4],
-            "cached": [0.5, 0.1, 0.025, 37.5, 1.25, "-", 2.5, 0.075, "-", 0.3, 7.5, "-", 2.5, 0.275, 0.55, 0.55, 0.375, "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
-            "output": [8.0, 1.6, 0.4, 150.0, 10.0, 10.0, 20.0, 0.6, 0.6, 2.4, 60.0, 600.0, 40.0, 4.4, 4.4, 4.4, 6.0, 0.6, 10.0, 12.0, "-", 40.0, 15.0, 30.0, 60.0, 120.0, 1.5, 2.0, 4.0, 2.0, 0.4],
-            "info_array" : [
-                            "複雜推理、高準確性，適合學術研究、程式碼生成。",
-                            "輕量、成本效益高、速度快，適合智慧客服、快速內容。",
-                            "最輕量、極致成本效益，適合大規模、低延遲應用。",
-                            "最新技術預覽，前沿功能，適合探索與測試。",
-                            "原生多模態，即時語音、視覺。適合多模態交互應用。",
-                            "音訊處理專注，語音辨識、合成。適合語音助理。",
-                            "即時響應、極低延遲，適合即時對話、線上輔助。",
-                            "輕量多模態、成本低速快。適合小型多模態應用。",
-                            "成本效益語音處理，適合小型語音聊天。",
-                            "成本效益即時響應，適合簡單即時翻譯。",
-                            "通用基礎模型，適合中等文本任務，如內容生成、摘要。",
-                            "'o1'專業版，處理複雜任務、大規模資料。適合專業內容分析。",
-                            "平衡性能與成本，適合多種日常文本處理任務。",
-                            "輕量級、成本效益高，適合大量基礎重複任務。",
-                            "效率、成本控制，適合簡單文本生成分析。",
-                            "高效能、低成本，適合基本文本任務、自動化。",
-                            "輕量程式碼生成，程式碼補全、bug修復。",
-                            "結合搜尋，提供即時資訊問答。",
-                            "多模態與搜尋結合，綜合資訊查詢。",
-                            "輔助電腦操作，自動化工作流程。",
-                            "圖片文字提取，OCR，圖片內容分析。",
-                            "圖片生成、創意設計。適合藝術創作。",
-                            "最新旗艦多模態，高階AI能力應用。",
-                            "長上下文、高速度、成本效益。適合大型文檔處理。",
-                            "卓越推理、知識廣、解決複雜問題。適合高智能應用。",
-                            "32k上下文，處理極長文本。適合法律審閱、文獻分析。",
-                            "高效能、成本效益，適合聊天、摘要、問答。",
-                            "指令微調優化，精確遵循指令。適合自動化任務。",
-                            "16k上下文，處理中長文本。適合長文章。",
-                            "早期通用模型，基礎內容創建、簡單程式碼。",
-                            "早期基礎模型，成本低、速度快。適合簡單分類。"
-                            ]
-        }
-    )
-    st.write("**GPT model 定價**  (最後更新時間：2025/5月)")
-    st.table(pricing)
+
+pricing = pd.DataFrame(
+    {
+        "model": ["gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4o", "gpt-4o-audio-preview", "gpt-4o-realtime-preview", "gpt-4o-mini", "gpt-4o-mini-audio-preview", "gpt-4o-mini-realtime-preview", "o1", "o1-pro", "o3", "o4-mini", "o3-mini", "o1-mini", "codex-mini-latest", "gpt-4o-mini-search-preview", "gpt-4o-search-preview", "computer-use-preview", "gpt-image-1-text", "gpt-image-1-image", "chatgpt-4o-latest", "gpt-4-turbo", "gpt-4", "gpt-4-32k", "gpt-3.5-turbo", "gpt-3.5-turbo-instruct", "gpt-3.5-turbo-16k-0613", "davinci-002", "babbage-002"],
+        "input": [2.0, 0.4, 0.1, 75.0, 2.5, 2.5, 5.0, 0.15, 0.15, 0.6, 15.0, 150.0, 10.0, 1.1, 1.1, 1.1, 1.5, 0.15, 2.5, 3.0, 5.0, 10.0, 5.0, 10.0, 30.0, 60.0, 0.5, 1.5, 3.0, 2.0, 0.4],
+        "cached": [0.5, 0.1, 0.025, 37.5, 1.25, "-", 2.5, 0.075, "-", 0.3, 7.5, "-", 2.5, 0.275, 0.55, 0.55, 0.375, "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
+        "output": [8.0, 1.6, 0.4, 150.0, 10.0, 10.0, 20.0, 0.6, 0.6, 2.4, 60.0, 600.0, 40.0, 4.4, 4.4, 4.4, 6.0, 0.6, 10.0, 12.0, "-", 40.0, 15.0, 30.0, 60.0, 120.0, 1.5, 2.0, 4.0, 2.0, 0.4],
+        "info_array" : [
+                        "複雜推理、高準確性，適合學術研究、程式碼生成。",
+                        "輕量、成本效益高、速度快，適合智慧客服、快速內容。",
+                        "最輕量、極致成本效益，適合大規模、低延遲應用。",
+                        "最新技術預覽，前沿功能，適合探索與測試。",
+                        "原生多模態，即時語音、視覺。適合多模態交互應用。",
+                        "音訊處理專注，語音辨識、合成。適合語音助理。",
+                        "即時響應、極低延遲，適合即時對話、線上輔助。",
+                        "輕量多模態、成本低速快。適合小型多模態應用。",
+                        "成本效益語音處理，適合小型語音聊天。",
+                        "成本效益即時響應，適合簡單即時翻譯。",
+                        "通用基礎模型，適合中等文本任務，如內容生成、摘要。",
+                        "'o1'專業版，處理複雜任務、大規模資料。適合專業內容分析。",
+                        "平衡性能與成本，適合多種日常文本處理任務。",
+                        "輕量級、成本效益高，適合大量基礎重複任務。",
+                        "效率、成本控制，適合簡單文本生成分析。",
+                        "高效能、低成本，適合基本文本任務、自動化。",
+                        "輕量程式碼生成，程式碼補全、bug修復。",
+                        "結合搜尋，提供即時資訊問答。",
+                        "多模態與搜尋結合，綜合資訊查詢。",
+                        "輔助電腦操作，自動化工作流程。",
+                        "圖片文字提取，OCR，圖片內容分析。",
+                        "圖片生成、創意設計。適合藝術創作。",
+                        "最新旗艦多模態，高階AI能力應用。",
+                        "長上下文、高速度、成本效益。適合大型文檔處理。",
+                        "卓越推理、知識廣、解決複雜問題。適合高智能應用。",
+                        "32k上下文，處理極長文本。適合法律審閱、文獻分析。",
+                        "高效能、成本效益，適合聊天、摘要、問答。",
+                        "指令微調優化，精確遵循指令。適合自動化任務。",
+                        "16k上下文，處理中長文本。適合長文章。",
+                        "早期通用模型，基礎內容創建、簡單程式碼。",
+                        "早期基礎模型，成本低、速度快。適合簡單分類。"
+                        ]
+    }
+)
+pricing = pricing.astype(str)
+st.write("**GPT model 定價**  (最後更新時間：2025/5月)")
+st.table(pricing.set_index('model'))

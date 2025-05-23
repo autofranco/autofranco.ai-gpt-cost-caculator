@@ -54,25 +54,25 @@ days_in_month = 30
 
 
 def get_input_price_per_M(model_name):
-    return token_pricing[model_name]["input"] if model_name in token_pricing else 0
+    return token_pricing[model_name]["input"] if token_pricing.get(model_name) else 0
 
 def get_output_price_per_M(model_name):
-    return token_pricing[model_name]["output"] if model_name in token_pricing else 0
+    return token_pricing[model_name]["output"] if token_pricing.get(model_name) else 0
 
 def get_cached_price_per_M(model_name):
-    if model_name in token_pricing:
-        return token_pricing[model_name]["cached"] if token_pricing[model_name]["cached"] else 0
+    if token_pricing.get(model_name) and token_pricing[model_name].get("cached"):
+        return token_pricing[model_name]["cached"]
     else:
         return 0
 
 def get_web_search_price_per_K(model_name, search_size):
     if search_size == "none":
         return 0
-    elif model_name in large_model_web_search_pricing["model"]:
+    elif large_model_web_search_pricing["model"].get(model_name):
         print("search size = ", search_size)
         print("large_model_web_search_pricing[search_size] = ", large_model_web_search_pricing[search_size])
         return large_model_web_search_pricing[search_size]
-    elif model_name in small_model_web_search_pricing["model"]:
+    elif small_model_web_search_pricing["model"].get(model_name):
         print("search size = ", search_size)
         print("small_model_web_search_pricing[search_size] = ", small_model_web_search_pricing[search_size])
         return small_model_web_search_pricing[search_size]
