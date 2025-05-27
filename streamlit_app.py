@@ -87,8 +87,8 @@ with st.container(border = True):
     output_cost_per_call = round(output_tokens * get_output_price_per_M(model_name) / 1000000 ,5)
     cached_cost_per_call = round(cached_tokens * get_cached_price_per_M(model_name) / 1000000 ,5)
     web_search_cost_per_call = (get_web_search_price_per_K(model_name, web_search_content_size) / 1000)
-    code_run_cost_per_call = round(get_code_run_price_per_session() ,5) if code_interpreter_used else 0
-    file_search_cost_per_call = round(get_file_search_price_per_K() / 1000 ,5)
+    code_run_cost_per_call = get_code_run_price_per_session() if code_interpreter_used else 0
+    file_search_cost_per_call = (get_file_search_price_per_K() / 1000) if file_search_storage >= 1 else 0
     call_cost_per_call = round(input_cost_per_call + output_cost_per_call + cached_cost_per_call + web_search_cost_per_call + code_run_cost_per_call + file_search_cost_per_call ,5)
     call_cost_per_day = round(daily_interactions * call_cost_per_call ,5)
     storage_cost_per_day = get_file_search_storage_GB_per_day(file_search_storage) 

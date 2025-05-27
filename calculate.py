@@ -83,7 +83,7 @@ def get_code_run_price_per_session():
     return code_interpreter_price
 
 def get_file_search_price_per_K():
-    return code_interpreter_price
+    return file_search_cost_per_thousand_call
 
 def get_file_search_storage_GB_per_day(storage_size):
     if storage_size > 1:
